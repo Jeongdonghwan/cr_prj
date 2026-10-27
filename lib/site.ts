@@ -1,7 +1,7 @@
 // 사이트 설정 — 연락처·사업자 정보·도메인은 이 파일만 고치면 전 페이지에 반영된다.
 // TODO(사업주 정보 수령 후): SITE_URL, PHONE, 사업자 정보 확정. 현재 값은 기존 사이트(01052572449.m7114.kr) 표기를 임시로 사용.
 
-export const SITE_URL = process.env.SITE_URL || 'https://powercrane.example'; // 배포: SITE_URL=https://도메인 (scripts/deploy.sh)
+export const SITE_URL = process.env.SITE_URL || 'https://xn--om2b13y1oao00a7id.kr'; // 파워크레인.kr (퓨니코드). 배포: bash scripts/deploy.sh <단계> <URL>
 export const BRAND = '파워크레인';
 export const SITE_NAME = '파워크레인 | 크레인 임대·작업';
 
