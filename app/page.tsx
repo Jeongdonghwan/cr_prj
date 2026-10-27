@@ -3,6 +3,7 @@ import { FLEET, openRegions, pagePath } from '../lib/data';
 import { BRAND } from '../lib/site';
 import { faqJsonLd } from '../lib/jsonld';
 import { Actions, IconArrow, JsonLd, SectionHead, Ticker, TonScale } from '../components/Common';
+import type { Metadata } from 'next';export const metadata: Metadata = { alternates: { canonical: '/' }, openGraph: { url: '/' } };
 
 const FAQ = [
   { q: '어느 지역까지 가나요?', a: '김포·파주·일산을 중심으로 경기북부, 서울 서부, 인천·부천 현장을 다닙니다. 그 밖의 지역도 전화로 상담할 수 있습니다.' },
