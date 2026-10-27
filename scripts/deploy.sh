@@ -14,7 +14,7 @@ python -I - <<'PYEOF'
 import glob, os, re, urllib.parse
 used = set()
 for f in glob.glob('out/**/*.html', recursive=True):
-    for u in re.findall(r'/og/([^"?]+\.jpg)', open(f, encoding='utf-8', errors='ignore').read()):
+    for u in re.findall(r'/og/([^"?]+[.]jpg)', open(f, encoding='utf-8', errors='ignore').read()):
         used.add(urllib.parse.unquote(u))
 rm = [f for f in glob.glob('out/og/*.jpg') if os.path.basename(f) not in used]
 for f in rm: os.remove(f)
