@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { OPEN_PAGES, getPage, pagePath, pageEncodedPath, canonicalPath, regionHub, regionOf, related } from '../../lib/data';
 import { compose, placeLabel } from '../../lib/compose';
-import { breadcrumbJsonLd, faqJsonLd, serviceJsonLd } from '../../lib/jsonld';
+import { breadcrumbJsonLd, faqJsonLd, itemListJsonLd, serviceJsonLd } from '../../lib/jsonld';
+import { BRAND, shareMeta } from '../../lib/site';
 import { Actions, IconArrow, JsonLd, SectionHead, Ticker, TonScale } from '../../components/Common';
 
 export const dynamicParams = false;
@@ -22,7 +23,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     title: c.title,
     description: c.description,
     alternates: { canonical: url },
-    openGraph: { title: c.title, description: c.description, url, images: [c.heroImg] },
+    ...shareMeta(p.slug, `${p.kw} - ${BRAND}`, { title: c.title, description: c.description, url }),
   };
 }
 
@@ -34,6 +35,7 @@ export default function KeywordPage({ params }: { params: { slug: string } }) {
   const hub = regionHub(p.parent);
   const rel = related(p);
   const path = pageEncodedPath(p);
+  const relList = [...rel.samePlace, ...rel.sameType, ...rel.otherAreas].map((x) => ({ name: x.kw, path: pageEncodedPath(x) }));
   const tickerItems = c.nearby.length >= 3 ? [p.place, ...c.nearby, ...c.region.hotspots] : [r.name, ...c.region.hotspots, ...c.region.demand];
 
   return (
@@ -48,6 +50,7 @@ export default function KeywordPage({ params }: { params: { slug: string } }) {
           ]),
           serviceJsonLd({ name: p.kw, description: c.description, path, area: placeLabel(p, r) }),
           faqJsonLd(c.faq),
+          ...(relList.length ? [itemListJsonLd(relList)] : []),
         ]}
       />
 

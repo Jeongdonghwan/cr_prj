@@ -3,14 +3,14 @@ import './globals.css';
 import { Header, Footer, StickyBar, JsonLd } from '../components/Common';
 import Motion from '../components/Motion';
 import { businessJsonLd, webSiteJsonLd } from '../lib/jsonld';
-import { SITE_URL, SITE_NAME, BRAND } from '../lib/site';
+import { SITE_URL, BRAND, shareMeta } from '../lib/site';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: `${BRAND} | 크레인 임대·대여·크레인 작업`, template: `%s` },
   description: '파주 차고지의 크레인 임대·작업 업체 파워크레인. 3.5톤 스카이차부터 100톤 크레인까지 보유, 경기북부·서울 서부·인천·부천 출동.',
   robots: { index: true, follow: true },
-  openGraph: { type: 'website', siteName: SITE_NAME, locale: 'ko_KR', images: ['/images/fleet-yard.webp'] },
+  ...shareMeta('home', `${BRAND} 크레인 임대·작업`),
   // TODO: 서치어드바이저·서치콘솔 소유확인 코드
 };
 

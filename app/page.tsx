@@ -1,11 +1,13 @@
 import Link from 'next/link';
-import { FLEET, openRegions, pagePath } from '../lib/data';
-import { BRAND } from '../lib/site';
-import { faqJsonLd } from '../lib/jsonld';
+import { FLEET, openRegions, pagePath, pageEncodedPath } from '../lib/data';
+import { BRAND, shareMeta } from '../lib/site';
+import { faqJsonLd, itemListJsonLd } from '../lib/jsonld';
 import { Actions, IconArrow, JsonLd, SectionHead, Ticker, TonScale } from '../components/Common';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = { alternates: { canonical: '/' }, openGraph: { url: '/' } };
+const HOME_TITLE = `${BRAND} | 크레인 임대·대여·크레인 작업`;
+const HOME_DESC = '파주 차고지의 크레인 임대·작업 업체 파워크레인. 3.5톤 스카이차부터 100톤 크레인까지 보유, 경기북부·서울 서부·인천·부천 출동.';
+export const metadata: Metadata = { alternates: { canonical: '/', types: { 'application/rss+xml': '/rss.xml' } }, ...shareMeta('home', `${BRAND} 크레인 임대·작업`, { title: HOME_TITLE, description: HOME_DESC, url: '/' }) };
 
 const FAQ = [
   { q: '어느 지역까지 가나요?', a: '김포·파주·일산을 중심으로 경기북부, 서울 서부, 인천·부천 현장을 다닙니다. 그 밖의 지역도 전화로 상담할 수 있습니다.' },
@@ -20,7 +22,7 @@ export default function Home() {
   const regionNames = areas.flatMap((a) => a.regions.map((r) => r.region.kw));
   return (
     <main>
-      <JsonLd data={faqJsonLd(FAQ)} />
+      <JsonLd data={[faqJsonLd(FAQ), itemListJsonLd(areas.flatMap((a) => a.regions.map((r) => ({ name: r.hub.kw, path: pageEncodedPath(r.hub) }))).slice(0, 30))]} />
       <section className="hero hero-home">
         <div className="hero-media" style={{ backgroundImage: 'url(/images/fleet-yard.webp)' }} />
         <div className="wrap hero-body">

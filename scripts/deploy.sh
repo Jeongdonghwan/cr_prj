@@ -5,6 +5,7 @@
 set -euo pipefail
 WAVE=${1:?단계(1~4)}; URL=${2:?https://도메인}
 cd "$(dirname "$0")/.."
+python -I scripts/make_og.py  # og 이미지(public/og, git 제외) 없는 것만 생성
 rm -rf out
 OPEN_WAVE=$WAVE SITE_URL=$URL npx next build
 grep -q "$URL" out/sitemap.xml || { echo "sitemap에 도메인이 없음"; exit 1; }

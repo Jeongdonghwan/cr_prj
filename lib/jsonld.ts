@@ -43,3 +43,10 @@ export const serviceJsonLd = (o: { name: string; description: string; path: stri
   areaServed: { '@type': 'Place', name: o.area },
   provider: { '@id': `${SITE_URL}/#business` },
 });
+
+// 캐러셀용 목록. path 는 인코딩된 경로(/%EA%B9%80.../)
+export const itemListJsonLd = (items: { name: string; path: string }[]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE_URL}${it.path}`, name: it.name })),
+});

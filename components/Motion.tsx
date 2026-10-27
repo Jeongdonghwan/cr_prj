@@ -2,8 +2,11 @@
 // 화면 효과 — 스크롤 등장(data-reveal), 숫자 카운트(data-count), 헤더 축소, 가로 스크롤 버튼(data-scroll).
 // 움직임 줄이기 설정이면 바로 최종 상태로 둔다.
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function Motion() {
+  // 링크로 페이지를 옮기면 새 요소에 효과를 다시 건다(없으면 새로고침 전까지 내용이 투명하게 남음)
+  const pathname = usePathname();
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const root = document.documentElement;
@@ -45,6 +48,6 @@ export default function Motion() {
     };
     document.addEventListener('click', onClick);
     return () => { io.disconnect(); window.removeEventListener('scroll', onScroll); document.removeEventListener('click', onClick); };
-  }, []);
+  }, [pathname]);
   return null;
 }

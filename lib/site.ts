@@ -31,3 +31,12 @@ export const MERGE_VARIANTS = true;
 export const tel = `tel:${CONTACT.phone.replace(/[^0-9]/g, '')}`;
 export const smsHref = `sms:${CONTACT.sms.replace(/[^0-9]/g, '')}`;
 export const absUrl = (path: string) => `${SITE_URL}${path}`;
+
+// og·트위터 카드: public/og/<key>.jpg (scripts/make_og.py 로 생성)
+export const shareMeta = (key: string, alt: string, o: { title?: string; description?: string; url?: string } = {}) => {
+  const images = [{ url: `${SITE_URL}/og/${encodeURIComponent(key)}.jpg`, width: 1200, height: 630, alt }];
+  return {
+    openGraph: { type: 'website' as const, siteName: SITE_NAME, locale: 'ko_KR', ...o, images },
+    twitter: { card: 'summary_large_image' as const, title: o.title, description: o.description, images },
+  };
+};
