@@ -9,6 +9,17 @@ python -I scripts/make_og.py  # og 이미지(public/og, git 제외) 없는 것�
 rm -rf out
 OPEN_WAVE=$WAVE SITE_URL=$URL npx next build
 grep -q "$URL" out/sitemap.xml || { echo "sitemap에 도메인이 없음"; exit 1; }
+# 열린 페이지가 쓰는 og 이미지만 남긴다(안 열린 키워드 이름이 파일명으로 드러나지 않게, 용량도 줄임)
+python -I - <<'PYEOF'
+import glob, os, re, urllib.parse
+used = set()
+for f in glob.glob('out/**/*.html', recursive=True):
+    for u in re.findall(r'/og/([^"?]+\.jpg)', open(f, encoding='utf-8', errors='ignore').read()):
+        used.add(urllib.parse.unquote(u))
+rm = [f for f in glob.glob('out/og/*.jpg') if os.path.basename(f) not in used]
+for f in rm: os.remove(f)
+print(f'og 이미지: 사용 {len(used)}장 남김, 미사용 {len(rm)}장 제외')
+PYEOF
 REMOTE=$(git remote get-url origin)
 cd out
 git init -q -b deploy && git add -A
