@@ -27,13 +27,13 @@ export default function Home() {
         <div className="hero-media" style={{ backgroundImage: 'url(/images/fleet-yard.webp)' }} />
         <div className="wrap hero-body">
           <p className="hero-label">CRANE RENTAL · PAJU</p>
-          <h1 className="hero-title"><span>크레인 임대와 작업,</span><span>파주 {BRAND}</span></h1>
-          <p className="hero-lead">3.5톤 스카이차부터 리프헬 100톤까지 직접 보유한 장비로 나갑니다. 김포·파주·일산을 중심으로 경기북부, 서울 서부, 인천·부천까지 다닙니다.</p>
+          <h1 className="hero-title"><span>크레인 임대와 작업</span><span>{BRAND}</span></h1>
+          <p className="hero-lead">3.5톤 스카이차부터 립헬 100톤까지 직접 보유<br />김포·파주·일산을 중심으로 경기북부·서울서부·인천·부천 지역까지</p>
           <Actions dark />
           <dl className="stats">
             <div><dt>보유 장비</dt><dd><span data-count="12">12</span>종</dd></div>
             <div><dt>최대 톤수</dt><dd><span data-count="100">100</span>t</dd></div>
-            <div><dt>출동 권역</dt><dd><span data-count="3">3</span>곳</dd></div>
+            <div><dt>출동 권역</dt><dd><span data-count="25">25</span>곳</dd></div>
           </dl>
         </div>
       </section>

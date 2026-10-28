@@ -291,3 +291,8 @@ button { font: inherit; }
   .js [data-reveal], .js .reveal-group > * { opacity: 1; transform: none; }
   .scale-fill, .timeline::after { width: 100% !important; }
 }
+
+/* 메인 히어로: 위쪽 사진은 선명하게, 글자가 있는 아래·왼쪽만 그라데이션 (2026-10-28 사용자 수정 요청) */
+.hero-home .hero-media::after { background: linear-gradient(0deg, rgba(17,20,24,.92) 0%, rgba(17,20,24,.6) 38%, rgba(17,20,24,0) 72%), linear-gradient(90deg, rgba(17,20,24,.5) 0%, rgba(17,20,24,0) 55%); }
+.hero-home .hero-title, .hero-home .hero-lead, .hero-home .hero-label { text-shadow: 0 2px 18px rgba(0,0,0,.55); }
+.hero-home .hero-lead { max-width: 760px; }
