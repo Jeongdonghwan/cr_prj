@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # 빌드 결과(out/)만 deploy 브랜치로 올린다. 서버는 deploy 브랜치를 받아 nginx로 서빙.
-#   bash scripts/deploy.sh <단계 1~4> <https://도메인>
+#   bash scripts/deploy.sh <묶음 1~4> <https://도메인>
 # 서버 갱신: cd /var/www/cr_prj && git fetch -q origin deploy && git reset -q --hard origin/deploy
 set -euo pipefail
-WAVE=${1:?단계(1~4)}; URL=${2:?https://도메인}
+WAVE=${1:?묶음(1~4)}; URL=${2:?https://도메인}
 cd "$(dirname "$0")/.."
 python -I scripts/make_og.py  # og 이미지(public/og, git 제외) 없는 것만 생성
 rm -rf out

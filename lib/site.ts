@@ -21,7 +21,7 @@ export const BUSINESS = {
 };
 
 // 순차 오픈: 이 단계 이하의 페이지만 빌드·사이트맵·내부링크에 포함된다.
-//   OPEN_WAVE=1 npm run build  (1 = 시군구 468 / 2 = +생활권 1,086 / 3 = +동 크레인·카고·미니 2,271 / 4 = 전체 3,376)
+//   OPEN_WAVE=1 npm run build  (post-launch 7일 오픈: 1 = 10/28 시군구 468 / 2 = 10/30 1,688 / 3 = 11/1 2,532 / 4 = 11/3 전체 3,376 — scripts/drip/rebatch.py)
 export const OPEN_WAVE = Number(process.env.OPEN_WAVE || 1);
 
 // 표기만 다른 키워드 페이지(고양/고양시, 강화/강화군 …)를 대표 페이지로 canonical 묶음 + 사이트맵 제외.
@@ -40,3 +40,7 @@ export const shareMeta = (key: string, alt: string, o: { title?: string; descrip
     twitter: { card: 'summary_large_image' as const, title: o.title, description: o.description, images },
   };
 };
+
+// 서치어드바이저(네이버)·서치콘솔(구글) HTML 태그 소유확인 — content 값만
+export const NAVER_VERIFY = '';
+export const GOOGLE_VERIFY = '';
