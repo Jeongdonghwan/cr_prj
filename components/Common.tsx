@@ -60,6 +60,7 @@ export const Header = () => (
       <nav className="nav">
         <Link href="/#fleet">장비</Link>
         <Link href="/area/">지역</Link>
+        <Link href="/blog/">작업 안내</Link>
         <a href={tel} className="nav-call"><IconPhone />{CONTACT.phone}</a>
       </nav>
     </div>
@@ -72,6 +73,7 @@ export const Footer = () => (
       <div>
         <strong className="foot-brand">{BRAND}</strong>
         <p>크레인 임대·대여, 크레인 작업. 김포·파주·일산을 중심으로 경기북부, 서울 서부, 인천·부천.</p>
+        <p className="foot-links"><Link href="/area/">지역별 안내</Link><Link href="/blog/">크레인 작업 안내 글</Link><a href="/rss.xml">RSS</a></p>
       </div>
       <ul className="foot-info">
         {BUSINESS.ceo && <li><span>대표</span>{BUSINESS.ceo}</li>}

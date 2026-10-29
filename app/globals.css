@@ -296,3 +296,18 @@ button { font: inherit; }
 .hero-home .hero-media::after { background: linear-gradient(0deg, rgba(17,20,24,.92) 0%, rgba(17,20,24,.6) 38%, rgba(17,20,24,0) 72%), linear-gradient(90deg, rgba(17,20,24,.5) 0%, rgba(17,20,24,0) 55%); }
 .hero-home .hero-title, .hero-home .hero-lead, .hero-home .hero-label { text-shadow: 0 2px 18px rgba(0,0,0,.55); }
 .hero-home .hero-lead { max-width: 760px; }
+
+/* 블로그 */
+.post-list { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); max-width: 860px; }
+.post-list a { display: grid; grid-template-columns: 7.5em 1fr; gap: 4px 20px; padding: 20px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: padding .3s var(--ease); }
+.post-list a:hover { padding-left: 8px; }
+.post-list time { font-family: var(--mono); font-size: .78rem; color: var(--muted); padding-top: 4px; grid-row: span 2; }
+.post-list strong { font-size: 1.12rem; letter-spacing: -0.02em; }
+.post-list span { color: var(--muted); font-size: .92rem; }
+@media (max-width: 560px) { .post-list a { grid-template-columns: 1fr; } .post-list time { grid-row: auto; padding: 0; } }
+.post-ul { margin: 0 0 18px; padding-left: 1.2em; max-width: 700px; }
+.post-ul li { margin-bottom: 8px; }
+.post .prose a { text-decoration-color: var(--yellow); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.related.one { grid-template-columns: 1fr; max-width: 760px; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .9rem; }
+.foot-links a { color: inherit; text-underline-offset: 3px; }

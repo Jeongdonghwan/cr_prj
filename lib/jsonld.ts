@@ -50,3 +50,18 @@ export const itemListJsonLd = (items: { name: string; path: string }[]) => ({
   '@type': 'ItemList',
   itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE_URL}${it.path}`, name: it.name })),
 });
+
+// 블로그 글. path 는 인코딩된 경로
+export const articleJsonLd = (o: { title: string; description: string; path: string; image: string; date: string }) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: o.title,
+  description: o.description,
+  image: o.image,
+  datePublished: o.date,
+  dateModified: o.date,
+  inLanguage: 'ko',
+  mainEntityOfPage: `${SITE_URL}${o.path}`,
+  author: { '@id': `${SITE_URL}/#business` },
+  publisher: { '@id': `${SITE_URL}/#business` },
+});

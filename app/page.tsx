@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { FLEET, openRegions, pagePath, pageEncodedPath } from '../lib/data';
+import { getPosts, postPath } from '../lib/blog';
 import { BRAND, shareMeta } from '../lib/site';
 import { faqJsonLd, itemListJsonLd } from '../lib/jsonld';
 import { Actions, IconArrow, JsonLd, SectionHead, Ticker, TonScale } from '../components/Common';
@@ -93,7 +94,19 @@ export default function Home() {
         </section>
 
         <section className="sec">
-          <SectionHead no="05" title="자주 묻는 질문" />
+          <SectionHead no="05" title="작업 안내 글" sub="톤수 고르는 법, 작업 반경, 도로 점용, 신호수처럼 장비를 부르기 전에 정할 것들." />
+          {getPosts().length > 0 && (
+            <ul className="post-list" data-reveal>
+              {getPosts().slice(0, 4).map((p) => (
+                <li key={p.slug}><Link href={postPath(p)}><time dateTime={p.publishedAt}>{p.publishedAt}</time><strong>{p.title}</strong><span>{p.description}</span></Link></li>
+              ))}
+            </ul>
+          )}
+          <p data-reveal><Link href="/blog/" className="more">글 전체 보기 <IconArrow /></Link></p>
+        </section>
+
+        <section className="sec alt">
+          <SectionHead no="06" title="자주 묻는 질문" />
           <div className="faq">{FAQ.map((f) => <details key={f.q} data-reveal><summary>{f.q}<i /></summary><p>{f.a}</p></details>)}</div>
         </section>
       </div>
