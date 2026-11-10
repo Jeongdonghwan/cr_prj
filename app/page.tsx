@@ -46,7 +46,7 @@ export default function Home() {
         <section className="sec">
           <SectionHead no="01" title="임대만 하는 곳이 아닙니다" />
           <div className="prose" data-reveal>
-            <p className="first">{BRAND}는 크레인을 임대·대여하고, 크레인 작업까지 직접 맡습니다. 기사가 함께 나가 줄걸이 위치와 신호를 맞추며 일합니다.</p>
+            <p className="first">{BRAND}은 크레인을 임대·대여하고, 크레인 작업까지 직접 맡습니다. 기사가 함께 나가 줄걸이 위치와 신호를 맞추며 일합니다.</p>
             <p>김포·파주·일산을 중심으로 일하고 있고, 그 밖의 지역도 전화 주시면 작업 방법과 맞는 장비를 안내합니다. 크레인 제원, 현장 답사, 견적 문의는 언제든 받습니다.</p>
           </div>
         </section>

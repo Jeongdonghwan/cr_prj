@@ -21,7 +21,7 @@ export const BUSINESS = {
 };
 
 // 순차 오픈: 이 단계 이하의 페이지만 빌드·사이트맵·내부링크에 포함된다.
-//   OPEN_WAVE=1 npm run build  (post-launch 7일 오픈: 1 = 10/28 시군구 468 / 2 = 10/30 1,688 / 3 = 11/1 2,532 / 4 = 11/3 전체 3,376 — scripts/drip/rebatch.py)
+//   OPEN_WAVE=1 npm run build  (post-launch 7일 오픈: 1 = 10/28 시군구 468 / 2 = 10/30 1,688 / 3 = 11/1 2,532 / 4 = 11/3 전체 3,376 — scripts/drip/rebatch.py / 추가 5 = 11/12 3,776 · 6 = 11/14 4,175 — scripts/add_extra_pages.py)
 export const OPEN_WAVE = Number(process.env.OPEN_WAVE || 1);
 
 // 표기만 다른 키워드 페이지(고양/고양시, 강화/강화군 …)를 대표 페이지로 canonical 묶음 + 사이트맵 제외.

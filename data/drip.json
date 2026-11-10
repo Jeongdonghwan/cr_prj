@@ -5,5 +5,15 @@
  "maxWave": 4,
  "postDays": 30,
  "postsPerDay": 1.5,
- "hold": null
+ "hold": null,
+ "extra": [
+  {
+   "wave": 5,
+   "date": "2026-11-12"
+  },
+  {
+   "wave": 6,
+   "date": "2026-11-14"
+  }
+ ]
 }

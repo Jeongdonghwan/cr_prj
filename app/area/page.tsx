@@ -23,7 +23,7 @@ export default function AreaIndex() {
       <div className="wrap content page-top">
         <p className="hero-label dark">AREA</p>
         <h1 className="page-title">지역별 크레인 안내</h1>
-        <p className="prose-p">{BRAND}가 다니는 지역의 안내 페이지입니다. 지금 {OPEN_PAGES.length.toLocaleString()}개가 열려 있습니다.</p>
+        <p className="prose-p">{BRAND}이 다니는 지역의 안내 페이지입니다. 지금 {OPEN_PAGES.length.toLocaleString()}개가 열려 있습니다.</p>
         {openRegions().map(({ area, regions }) => (
           <section key={area} className="sec">
             <h2 className="area-h">{area}</h2>

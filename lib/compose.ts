@@ -97,7 +97,7 @@ export function compose(p: Page): Composed {
 
   // ---- 도입 ----
   const intros = [
-    `${place}에서 ${j(label, '을')} 찾는 현장은 대부분 ${j(dm[0], '이나')} ${dm[1]} 작업입니다. ${BRAND}는 김포·파주·일산을 중심으로 일하며 ${r.area} 현장까지 장비를 보내고, 올릴 물건의 무게와 높이, 차량에서 설치 지점까지의 거리를 먼저 듣고 톤수를 정합니다.`,
+    `${place}에서 ${j(label, '을')} 찾는 현장은 대부분 ${j(dm[0], '이나')} ${dm[1]} 작업입니다. ${j(BRAND, '은')} ${pick([`김포·파주·일산을 중심으로 일하며 ${r.area} 현장까지 장비를 보내고, 올릴 물건의 무게와 높이, 차량에서 설치 지점까지의 거리를 먼저 듣고 톤수를 정합니다.`, `파주 차고지에서 ${r.name} 쪽으로 장비를 보내며, 상담 때 물건 무게와 설치 위치를 듣고 차량을 고릅니다.`, `${j(r.kw, '을')} 포함한 ${r.area} 일대를 다니고, ${place} 작업도 무게·높이·반경을 들은 뒤 배차합니다.`], s, 'brand')}`,
     `${r.name}의 현장 성격은 분명합니다. ${r.traits}. ${place} ${label} 문의도 이 흐름 안에서 들어오기 때문에, 현장 종류를 들으면 필요한 장비가 대략 정해집니다.`,
     `크레인은 톤수보다 현장 조건이 먼저입니다. ${place}처럼 ${hs[0]} 주변 현장은 진입로 폭과 아웃트리거를 펼칠 공간부터 확인해야 ${label} 배차가 정확해지고, 당일에 장비를 바꾸는 일이 생기지 않습니다.`,
     `${place} ${label} 문의는 사진으로 시작하면 빠릅니다. 올릴 물건, 설치 위치, 차량을 세울 곳을 찍어 문자로 보내주시면 보유 장비 중 맞는 차량과 작업 방법을 안내합니다.`,
@@ -130,7 +130,10 @@ export function compose(p: Page): Composed {
   if (eq) {
     guide.heading = pick([`${label}, 이럴 때 맞습니다`, `${place} ${label} 고르는 기준`, `${j(label, '이')} 필요한 현장인지 확인하세요`], s, 'gh');
     guide.paras = [
-      `${j(label, '은')} ${eq.intent}에 쓰는 장비입니다. 일반적인 제원 범위는 ${eq.range}이고, ${eq.jobs.slice(0, 3).join(', ')} 작업에 많이 씁니다.`,
+      pick([
+        `${j(label, '은')} ${eq.intent}에 쓰는 장비입니다. 일반적인 제원 범위는 ${eq.range}이고, ${eq.jobs.slice(0, 3).join(', ')} 작업에 많이 씁니다.`,
+        `${eq.intent}에는 ${j(label, '이')} 맞습니다. ${place} 문의도 ${rotate<string>(eq.jobs, s, 'ej').slice(0, 2).join('이나 ')} 쪽이 많고, 제원은 보통 ${eq.range} 범위에서 고릅니다.`,
+      ], s, 'gp1'),
       `${place} 현장에서는 ${dm[0]} 작업과 연결되는 경우가 많습니다. ${eq.pageQuestion} 판단이 서지 않으면 현장 사진으로 먼저 확인해 드립니다.`,
     ];
     guide.checks = rotate<string>(eq.checks, s, 'chk').slice(0, 2);
@@ -138,11 +141,18 @@ export function compose(p: Page): Composed {
   } else if (ton) {
     guide.heading = pick([`${j(label, '으로')} 할 수 있는 작업`, `${ton.name}급이 맞는 현장`, `${place}에서 ${j(ton.name, '을')} 고르는 이유`], s, 'gh');
     guide.paras = [
-      `${ton.name}급은 ${ton.typical} 작업에 주로 씁니다. 일반적인 제원은 ${ton.reach} 정도이고, ${ton.fit} 같은 작업에 맞습니다.`,
-      `${ton.limit}. ${place}처럼 ${hs[0]} 주변 현장은 차량을 세울 위치에 따라 같은 무게도 필요한 톤수가 달라집니다.`,
+      pick([
+        `${ton.name}급은 ${ton.typical} 작업에 주로 씁니다. 일반적인 제원은 ${ton.reach} 정도이고, ${ton.fit} 같은 작업에 맞습니다.`,
+        `${place}에서 ${j(label, '을')} 찾는 작업은 ${ton.typical} 쪽이 많습니다. ${ton.name}급 제원은 대략 ${ton.reach}입니다.`,
+        `${ton.name}급 제원(${ton.reach})이면 ${ton.typical} 작업은 대부분 이 범위에 들어옵니다.`,
+      ], s, 'gp1'),
+      pick([
+        `${ton.limit}. ${place}처럼 ${hs[0]} 주변 현장은 차량을 세울 위치에 따라 같은 무게도 필요한 톤수가 달라집니다.`,
+        `${hs[0]}, ${hs[1]} 같은 현장은 차량 위치가 톤수를 바꿉니다. ${ton.limit}.`,
+      ], s, 'gp2'),
     ];
-    guide.checks = ['올릴 물건의 무게(명판·도면 기준)', '설치 높이와 차량에서 설치 지점까지 거리', '차량 진입로와 아웃트리거 펼칠 공간'];
-    guide.pitfalls = ['무게만 보고 톤수를 정하면 반경 때문에 작업이 안 될 수 있습니다', '도로 위에 장비를 세우면 관할 기관의 도로 점용 절차가 필요할 수 있습니다'];
+    guide.checks = rotate(['올릴 물건의 무게(명판·도면 기준)', '설치 높이와 차량에서 설치 지점까지 거리', '차량 진입로와 아웃트리거 펼칠 공간', `${place} 현장 앞 도로 폭과 주차 가능 여부`, '양중물의 크기와 줄걸이 지점', '작업 날짜와 시작 가능한 시간'], s, 'chk').slice(0, 3);
+    guide.pitfalls = rotate(['무게만 보고 톤수를 정하면 반경 때문에 작업이 안 될 수 있습니다', '도로 위에 장비를 세우면 관할 기관의 도로 점용 절차가 필요할 수 있습니다', `${ton.name}급이라도 차량에서 멀리 뻗으면 들 수 있는 무게가 줄어듭니다`, '전선이나 가로수가 붐 회전 범위에 걸리면 차량 위치를 바꿔야 합니다'], s, 'pit').slice(0, 2);
   } else {
     guide.heading = pick([`${t.rental ? '크레인 임대' : '크레인'} 이렇게 진행합니다`, `${place} ${label} 전에 알아두세요`, `톤수는 이렇게 정합니다`], s, 'gh');
     guide.paras = [
@@ -153,8 +163,8 @@ export function compose(p: Page): Composed {
           : `크레인은 무게, 높이, 설치 지점까지의 거리로 고릅니다. 같은 1톤도 멀리 뻗을수록 큰 장비가 필요합니다.`,
       `${place} 현장의 ${dm[0]}처럼 작업 종류를 알려주시면 스카이차부터 100톤까지 보유 장비 중에서 고릅니다.`,
     ];
-    guide.checks = ['양중물 무게와 크기', '올릴 높이와 작업 반경', '진입로·주차 공간과 전선·가로수 위치'];
-    guide.pitfalls = ['현장 사진 없이 톤수를 정하면 당일 장비 교체가 생길 수 있습니다', '아파트·상가는 관리사무소 작업 신고를 먼저 해두면 작업이 빨라집니다'];
+    guide.checks = rotate(['양중물 무게와 크기', '올릴 높이와 작업 반경', '진입로·주차 공간과 전선·가로수 위치', `${place} 현장 주소와 차량 세울 자리`, '작업 일수(반나절·하루·여러 날)', '함께 작업할 업체와 인원'], s, 'chk').slice(0, 3);
+    guide.pitfalls = rotate(['현장 사진 없이 톤수를 정하면 당일 장비 교체가 생길 수 있습니다', '아파트·상가는 관리사무소 작업 신고를 먼저 해두면 작업이 빨라집니다', '작업 시간이 길어질 수 있으면 상담 때 미리 말해 두는 편이 일정 잡기에 좋습니다', '좁은 골목은 장비 크기보다 진입로가 먼저 걸립니다'], s, 'pit').slice(0, 2);
   }
 
   // ---- 작업 종류 (용도 데이터에서 타입·지역 수요에 맞는 것) ----
@@ -169,7 +179,7 @@ export function compose(p: Page): Composed {
     items: chosen.map((u, i) => ({
       name: u.name,
       // 현장 이름·장비를 넣고 설명은 첫 구절만 — 같은 작업 카드가 페이지마다 같은 문장이 되지 않게
-      text: `${hs[i % hs.length]} 같은 현장의 ${j(u.name, '은')} ${j(u.equip.join('·'), '으로')} 진행합니다. ${u.detail.split(/[,.]/)[0].trim()}.`,
+      text: `${hs[i % hs.length]} 같은 현장의 ${j(u.name, '은')} ${j(u.equip.join('·'), '으로')} 진행합니다. ${pick(u.detail.split('.').map((x: string) => x.trim()).filter(Boolean), s, `jd${i}`)}.`,
       season: u.season,
     })),
   };
@@ -191,11 +201,11 @@ export function compose(p: Page): Composed {
     const u = USES.find((x) => x.slug === pool[(i + seedOf(s)) % pool.length]) || USES[0];
     const k = kindOf(u);
     const f = fleet.find((x) => x.kind === k) || fleet[i % fleet.length];
-    const first = u.detail.split(/[.,]/)[0].trim();
     const text = pick([
-      `${h} 쪽 ${u.name} 작업은 ${j(f.name, '이')} 맡습니다. ${first}. ${u.checks[0]}부터 확인합니다.`,
-      `${h}에서는 ${j(u.name, '이')} 많습니다. ${first}. 이 현장에는 ${j(f.name, '을')} 보내고, ${u.checks[1] || u.checks[0]}를 먼저 봅니다.`,
-      `${j(u.name, '이')} 잦은 ${h} 현장. ${first}. ${f.name} 기준으로 일정을 잡고, 시기는 ${u.season}에 몰립니다.`,
+      `${h} 쪽 ${u.name} 작업은 ${j(f.name, '이')} 맡습니다. ${u.checks[0]}부터 확인합니다.`,
+      `${h}에서는 ${j(u.name, '이')} 많습니다. 이 현장에는 ${j(f.name, '을')} 보내고, ${j(u.checks[1] || u.checks[0], '을')} 먼저 봅니다.`,
+      `${j(u.name, '이')} 잦은 ${h} 현장. ${f.name} 기준으로 일정을 잡고, ${j(u.checks[0], '을')} 먼저 확인합니다.`,
+      `${place}에서 ${h}까지 오가는 ${u.name} 일정은 ${j(f.name, '으로')} 잡습니다. ${(u.checks[2] || u.checks[0])}도 상담 때 함께 봅니다.`,
     ], s, `site${i}`);
     return { place: h, job: u.name, text };
   });
@@ -223,6 +233,20 @@ export function compose(p: Page): Composed {
       { title: '현장 작업', text: `${fleet[0].name} 기사가 출동해 작업합니다.` },
       { title: '마무리 점검', text: '추가 일정이 있으면 그 자리에서 잡습니다.' },
     ],
+    [
+      { title: '주소·사진 전달', text: `${place} 주소와 ${dm[0]} 같은 작업 내용을 문자로 남겨 주세요.` },
+      { title: '차량 정하기', text: `${hs[1]} 쪽 현장이면 진입로와 세울 자리를 보고 차량을 고릅니다.` },
+      { title: '날짜 잡기', text: `${fleet[0].name} 일정이 비는 날로 시간을 맞춥니다.` },
+      { title: '작업', text: '기사가 줄걸이와 신호를 맡아 물건을 올립니다.' },
+      { title: '정리', text: '아웃트리거를 접고 주변을 정리한 뒤 출발합니다.' },
+    ],
+    [
+      { title: '문의', text: `${label} 작업 날짜와 ${place} 현장 위치를 알려주세요.` },
+      { title: '무게·반경 확인', text: '물건 무게와 차량에서 설치 지점까지 거리를 확인합니다.' },
+      { title: '장비 배정', text: `${fleet2} 가운데 현장에 맞는 차량을 배정합니다.` },
+      { title: '출동', text: `파주 차고지에서 ${r.name} 현장으로 출발합니다.` },
+      { title: '완료 확인', text: '설치 위치와 고정 상태를 같이 보고 마칩니다.' },
+    ],
   ], s, 'steps');
 
   const info: [string, string][] = [
@@ -240,11 +264,15 @@ export function compose(p: Page): Composed {
     { q: `${place} ${label} 비용은 어떻게 정해지나요?`, a: `톤수, 작업 시간, ${place}까지 거리, 야간·휴일 여부로 정해집니다. 사진을 보고 안내합니다.` },
     { q: `${place}까지 출동이 되나요?`, a: `네, ${r.name} 전역으로 출동합니다. 동선은 ${sentence(r.access)} 일정이 비어 있으면 당일 배차도 상담합니다.` },
     { q: '몇 톤이 필요한지 모르겠어요.', a: `무게·높이·거리를 알려주시거나 ${place} 현장 사진을 보내주시면 맞는 톤수를 골라 드립니다.` },
-    { q: '작업 전에 준비할 것이 있나요?', a: `${guide.checks.slice(0, 2).join(', ')} 정도를 미리 확인해 주세요. 아파트·상가라면 관리사무소 작업 신고도 먼저 해두면 좋습니다.` },
-    { q: `${label} 말고 다른 장비가 맞을 수도 있나요?`, a: '사람이 올라가면 스카이차, 자재를 싣고 와서 올리면 카고, 무겁거나 멀면 하이드로가 맞습니다.' },
+    { q: '작업 전에 준비할 것이 있나요?', a: `${guide.checks.slice(0, 2).join(', ')} 정도를 미리 확인해 주세요.${pick([' 아파트·상가라면 관리사무소 작업 신고도 먼저 해두면 좋습니다.', ' 현장 사진이 있으면 더 빨리 정해집니다.', ''], s, 'fq4')}` },
+    { q: `${label} 말고 다른 장비가 맞을 수도 있나요?`, a: pick(['사람이 올라가면 스카이차, 자재를 싣고 와서 올리면 카고, 무겁거나 멀면 하이드로가 맞습니다.', `${place} 현장 조건을 듣고 ${label} 대신 스카이차나 다른 톤수를 권하기도 합니다.`], s, 'fq5') },
     { q: '야간이나 주말 작업도 가능한가요?', a: '행사 무대 트러스 설치 같은 야간 작업 사례가 있습니다. 일정을 듣고 안내합니다.' },
     { q: '도로에 크레인을 세워야 하는데 괜찮나요?', a: `도로·인도 점용은 관할 허가가 필요할 수 있어 ${place} 차량 위치를 먼저 확인합니다.` },
     { q: `${r.name} 말고 다른 지역도 되나요?`, a: `김포·파주·일산을 중심으로 경기북부, 서울 서부, 인천·부천을 다닙니다.` },
+    { q: '기사도 함께 오나요?', a: `네, 크레인 기사가 장비와 함께 ${place} 현장으로 나가 줄걸이와 신호를 맞춥니다.` },
+    { q: '스카이차도 있나요?', a: '3.5톤·5톤 스카이차를 보유하고 있어 사람이 올라가는 간판·외벽 작업도 함께 상담합니다.' },
+    { q: '현장을 먼저 봐 줄 수 있나요?', a: `${place}처럼 조건이 까다로운 현장은 답사 후 장비를 정하기도 합니다. 일정은 전화로 맞춥니다.` },
+    { q: '장비는 어디서 출발하나요?', a: `파주 차고지에서 출발합니다. ${r.name} 현장은 ${sentence(r.access)}` },
   ];
   const faq = rotate(bank, s, 'faq').slice(0, 4);
 
