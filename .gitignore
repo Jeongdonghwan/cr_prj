@@ -4,3 +4,4 @@ out
 public/og
 scripts/__pycache__
 tsconfig.tsbuildinfo
+.lastmod.json

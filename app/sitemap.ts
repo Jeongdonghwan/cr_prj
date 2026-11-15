@@ -9,7 +9,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: 'weekly', priority: 1 },
     { url: `${SITE_URL}/area/`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${SITE_URL}/blog/`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
+    { url: `${SITE_URL}/about/`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/blog/`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
     ...getPosts().map((p) => ({ url: `${SITE_URL}${postEncodedPath(p)}`, lastModified: p.publishedAt ? new Date(p.publishedAt) : now, changeFrequency: 'monthly' as const, priority: 0.6 })),
     ...OPEN_PAGES.filter(inSitemap).map((p) => ({
       url: `${SITE_URL}${pageEncodedPath(p)}`,

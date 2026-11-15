@@ -1,6 +1,6 @@
 // 공통 UI — 이모지 없이 선 아이콘, 각진 버튼, 번호 붙은 섹션 머리.
 import Link from 'next/link';
-import { BRAND, CONTACT, BUSINESS, tel, smsHref } from '../lib/site';
+import { BRAND, CONTACT, BUSINESS, UPDATED, tel, smsHref } from '../lib/site';
 import { FLEET } from '../lib/data';
 
 export const JsonLd = ({ data }: { data: object | object[] }) => (
@@ -73,7 +73,7 @@ export const Footer = () => (
       <div>
         <strong className="foot-brand">{BRAND}</strong>
         <p>크레인 임대·대여, 크레인 작업. 김포·파주·일산을 중심으로 경기북부, 서울 서부, 인천·부천.</p>
-        <p className="foot-links"><Link href="/area/">지역별 안내</Link><Link href="/blog/">크레인 작업 안내 글</Link><a href="/rss.xml">RSS</a></p>
+        <p className="foot-links"><Link href="/about/">소개</Link><Link href="/area/">지역별 안내</Link><Link href="/blog/">크레인 작업 안내 글</Link><a href="/rss.xml">RSS</a></p>
       </div>
       <ul className="foot-info">
         {BUSINESS.ceo && <li><span>대표</span>{BUSINESS.ceo}</li>}
@@ -82,7 +82,7 @@ export const Footer = () => (
         <li><span>전화</span>{CONTACT.phone}</li>
       </ul>
     </div>
-    <div className="wrap foot-bottom">© {new Date().getFullYear()} {BRAND} · 상담 시 받은 정보는 견적 안내에만 씁니다.</div>
+    <div className="wrap foot-bottom">© {new Date().getFullYear()} {BRAND} · 상담 시 받은 정보는 견적 안내에만 씁니다. · 최종 수정 <time dateTime={UPDATED}>{UPDATED}</time></div>
   </footer>
 );
 
