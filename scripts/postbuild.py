@@ -5,8 +5,8 @@
 1. lastmod 를 실제 날짜로: 주소를 처음 본 날(상태 파일)과 lib/site.ts 의 UPDATED(본문 개정일) 중 늦은 날.
    빌드 시각이 아닌 lastmod(블로그 글 날짜 등)는 그대로 둔다. 페이지 파일은 열지 않는다
    (이 PC 는 파일 하나 여는 데 0.15초 — 수만 쪽을 매일 열면 배포가 몇 시간 늘어난다).
-2. sitemap.xml 을 색인 파일로 바꾸고 묶음으로 나눈다: sitemap-core.xml(메인·허브·priority 0.8+) /
-   sitemap-blog.xml / sitemap-kw-N.xml(1,000개씩). 주소 sitemap.xml 은 그대로라 등록된 사이트맵이 안 깨진다.
+2. sitemap.xml = 주소 전부 한 파일(urlset, 실제 lastmod). 참고용 묶음 파일 sitemap-core.xml / sitemap-blog.xml /
+   sitemap-kw-N.xml 도 만들지만 sitemap.xml 에서 가리키지 않는다(네이버 색인 파일 지원 불확실 — 2026-11-20 되돌림).
 3. llms.txt: 메인 title·description + 핵심 페이지·최근 블로그 글 목록.
 4. .ops.json: 대시보드용 — 전체 제작 페이지 수·써 둔 글 수·앞으로 열릴 날짜별 수 (data/drip.json·site-pages.json·content/blog 가 있을 때).
 """
@@ -89,9 +89,9 @@ def main(out, state_path):
             [(f'sitemap-kw-{i // CHUNK + 1}.xml', kw[i:i + CHUNK]) for i in range(0, len(kw), CHUNK)]
     for name, entries in parts:
         open(os.path.join(out, name), 'w', encoding='utf-8', newline='\n').write(urlset(entries))
-    idx = ''.join(f'<sitemap><loc>{base}/{n}</loc><lastmod>{max(d for _, d in e)}</lastmod></sitemap>\n' for n, e in parts if e)
-    open(os.path.join(out, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n').write(
-        f'<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="{NS}">\n{idx}</sitemapindex>\n')
+    # sitemap.xml 은 주소 전부를 담은 한 파일(urlset). 색인 파일(sitemapindex)로 바꾼 11/17 배포 다음 날부터 네이버 노출이
+    # 전 사이트에서 같이 끊겼다(바꾸지 않은 도로시펫·jd8 은 정상) — 네이버가 색인 파일을 읽는다는 공식 문서도 없다. 묶음 파일은 참고용으로만 남긴다
+    open(os.path.join(out, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n').write(urlset(core + blog + kw))
     json.dump(new_state, open(state_path, 'w', encoding='utf-8'), ensure_ascii=False)
 
     title, desc = head(os.path.join(out, 'index.html'))
@@ -125,7 +125,7 @@ def demo():
         assert s['https://a.kr/x/'] == '2020-01-01' and s['https://a.kr/y/'] != '2020-01-01'            # 처음 본 날 유지
         assert 'x/</loc><lastmod>2021-05-05' in kw                                                    # 개정일이 더 늦으면 개정일
         assert '2026-01-02' in open(os.path.join(out, 'sitemap-blog.xml')).read()                     # 글 날짜 유지
-        assert '<sitemapindex' in open(os.path.join(out, 'sitemap.xml')).read()
+        sm_ = open(os.path.join(out, 'sitemap.xml')).read(); assert '<urlset' in sm_ and sm_.count('<url>') == 4   # 한 파일에 전부
         assert os.path.exists(os.path.join(out, 'llms.txt')) and 'schedule' in json.load(open(os.path.join(out, '.ops.json')))
     print('demo ok')
 
