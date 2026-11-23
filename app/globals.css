@@ -311,3 +311,30 @@ button { font: inherit; }
 .related.one { grid-template-columns: 1fr; max-width: 760px; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .9rem; }
 .foot-links a { color: inherit; text-underline-offset: 3px; }
+
+/* ---------- 키워드 페이지: h1 수식어 + 레이 모범 구조 (2026-11-24) ---------- */
+.hero-title .hero-sub { margin-top: 14px; font-size: .4em; font-weight: 600; line-height: 1.4; letter-spacing: -0.02em; }
+.x-hero { min-height: 480px; }
+.x-grid { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 56px; align-items: start; padding-top: 56px; padding-bottom: 24px; }
+.x-sum { border-top: 2px solid var(--ink); background: var(--gray); padding: 26px 28px 24px; margin-bottom: 20px; }
+.x-sum h2 { margin: 0 0 10px; font-size: 1.2rem; letter-spacing: -0.03em; }
+.x-sum p { margin: 0 0 20px; line-height: 1.85; }
+.x-sum dl, .x-side dl { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; margin: 0; }
+.x-sum dt, .x-side dt { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; color: var(--muted); }
+.x-sum dd, .x-side dd { margin: 2px 0 0; font-weight: 600; font-size: .95rem; }
+.x-article { counter-reset: x; }
+.x-article section { counter-increment: x; padding: 30px 0 6px; border-bottom: 1px solid var(--line); }
+.x-article h2 { margin: 0 0 12px; font-size: clamp(1.18rem, 2.4vw, 1.45rem); line-height: 1.4; letter-spacing: -0.03em; font-weight: 800; }
+.x-article h2::before { content: counter(x, decimal-leading-zero); display: block; font-family: var(--mono); font-size: .74rem; font-weight: 500; color: var(--orange); margin-bottom: 4px; }
+.x-article p { margin: 0 0 22px; font-size: 1.04rem; line-height: 1.9; max-width: 720px; }
+.x-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 32px 0 8px; }
+.x-photos figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: var(--gray); }
+.x-photos img { width: 100%; height: 100%; object-fit: cover; }
+.x-faq { margin-top: 40px; }
+.x-faq h2 { margin: 0 0 16px; font-size: 1.45rem; letter-spacing: -0.03em; }
+.x-side { position: sticky; top: 96px; border: 1px solid var(--line); border-top: 4px solid var(--yellow); padding: 22px 22px 18px; display: grid; gap: 14px; }
+.x-side h3 { margin: 0; font-size: 1.02rem; }
+.x-side dl { grid-template-columns: 1fr; }
+.x-side .btn-primary { justify-content: center; }
+@media (max-width: 900px) { .x-grid { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; } .x-side { position: static; } .x-sum { padding: 22px 18px; } .x-sum dl { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .x-photos { grid-template-columns: 1fr 1fr; } .x-photos figure:last-child { display: none; } }

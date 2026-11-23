@@ -93,3 +93,10 @@ OPEN_WAVE=1 npm run build               # out/ 생성 → 서버에 업로드
 - `data/site-pages.json` 페이지 목록(자동 생성) · `data/regions.json` + `regions-incheon.json` 지역 · `data/fleet.json` 장비 · `data/equipment.json`·`tons.json`·`uses.json` 설명 재료
 - `lib/compose.ts` 본문 조합기 · `lib/data.ts` 로더·관련 링크 · `lib/site.ts` 설정
 - `app/[slug]/page.tsx` 키워드 페이지 · `app/page.tsx` 메인 · `app/area/page.tsx` 지역 목록
+
+## 9. h1 수식어·레이 구조 적용 (2026-11-24)
+
+- 키워드 페이지를 레이 모범 구조로 바꿈(`lib/compose.ts`·`app/[slug]/page.tsx`·`globals.css` 끝 `.x-*`): 분류 줄 → h1 `키워드 + 수식어(hero-sub)` → 설명 → "{키워드} 핵심 요약"(결론 + 사실 4칸) → 절 6개(각 한 문단, 6개 중 4개 h2 에 키워드 전체) → 사진 3장 → "{키워드} 자주 묻는 질문"(FAQPage 3개) → 관련 링크 3묶음(각 4개). 톤수 눈금 띠·지역명 흐르는 띠·장비 레일·카드·진행 목록은 키워드 페이지에서 뺌(메인은 그대로).
+- 수식어 4벌(대표 현장·주요 작업·장비 제원·배차 기준) 해시 고정, 키워드에 든 지역명이 들어간 현장 이름은 수식어에서 제외. 절마다 h2 3벌·본문 3벌, 문장마다 장소·장비를 넣어 같은 장비 페이지끼리 문장이 겹치지 않게.
+- description 을 §5-3 기준으로 새로: 키워드 → 배차 장비·작업 → 현장 사실 → 상담 전화, 50~80자(문장 단위로 짧은 후보 선택). 주소·title·canonical·사이트맵·robots·postbuild 는 그대로.
+- 측정(OPEN_WAVE=6, 열린 4,175쪽, `npx tsx scripts/x_check.ts` · `python -I scripts/x_html_check.py out data/site-pages.json`): h1 중복 0 · 조사 오류 0 · description 55~80자 중복 0 · 절 문단 평균 239자(공백 제외) · 같은 문장 최대 — 같은 장비 19%, 같은 지역·같은 장비 24%(평균 9%) · 같은 장소·다른 장비 평균 18%(최대 68%) · 빌드 main 평균 2,364자, p 11개(200자당 1개 이하) · 키워드 든 h2 6개/8개 · 본문 내부링크 12개.
