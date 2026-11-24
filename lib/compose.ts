@@ -82,11 +82,6 @@ export function compose(p: Page): Composed {
   const hx = hsx.length ? hsx : hs;
 
   // ---- 메타 (주소·title·description 은 2026-11-24 이전과 같다) ----
-  const title = pick([
-    `${p.kw} | ${t.short} 배차·견적 상담 - ${BRAND}`,
-    `${p.kw} 전문 ${BRAND} | ${r.kw} 현장 출동`,
-    `${p.kw} - ${hs[0]} 현장 ${t.short} 작업 안내 | ${BRAND}`,
-  ], s, 'title');
   // description 45~80자(2026-11-24 §5-3): 키워드 → 관련 장비·작업 → 페이지 사실 → 상담 전화. 80자 넘으면 앞 후보부터 짧은 쪽으로
   const ph = CONTACT.phone;
   const descs = pick([
@@ -104,12 +99,16 @@ export function compose(p: Page): Composed {
     `${place} 현장도 파주 차고지에서 출발합니다. ${place} ${label} 작업은 기사가 함께 나가 줄걸이와 신호까지 맡습니다.`,
   ], s, 'lead');
   const specSub = eq ? `${eq.tagline}, ${f0} 기준` : ton ? `${ton.reach} 제원과 배차` : t.rental ? '기사 포함 스카이차부터 100톤까지' : '스카이차부터 100톤까지 현장별 배차';
-  const h1sub = pick([
+  // h1 수식어 = title 앞부분. '키워드 수식어'가 40자 이하인 벌을 해시 순서대로 고르고, 없으면 짧은 벌
+  const h1subs = [
     `${hx[0]} 현장까지 ${f0} 배차`,
     `${dm[0]} 작업 장비 고르기`,
     specSub,
     `무게·높이·반경으로 정하는 ${f0} 배차`,
-  ], s, 'h1');
+  ];
+  const h1k = seedOf(`${s}::h1`) % h1subs.length;
+  const h1sub = [...h1subs.slice(h1k), ...h1subs.slice(0, h1k)].find((x) => `${p.kw} ${x}`.length <= 40) || '기사 동행 배차';
+  const title = `${p.kw} ${h1sub} | ${BRAND}`; // 앞부분은 h1 글자와 같다. 상호는 끝에 한 번
 
   // ---- 핵심 요약 ----
   const summary = pick([

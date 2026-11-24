@@ -37,7 +37,7 @@ export const absUrl = (path: string) => `${SITE_URL}${path}`;
 export const shareMeta = (key: string, alt: string, o: { title?: string; description?: string; url?: string } = {}) => {
   const images = [{ url: `${SITE_URL}/og/${encodeURIComponent(key)}.jpg`, width: 1200, height: 630, alt }];
   return {
-    openGraph: { type: 'website' as const, siteName: SITE_NAME, locale: 'ko_KR', ...o, images },
+    openGraph: { type: 'website' as const, siteName: BRAND, locale: 'ko_KR', ...o, images },
     twitter: { card: 'summary_large_image' as const, title: o.title, description: o.description, images },
   };
 };
