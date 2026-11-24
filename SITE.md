@@ -101,3 +101,4 @@ OPEN_WAVE=1 npm run build               # out/ 생성 → 서버에 업로드
 - description 을 §5-3 기준으로 새로: 키워드 → 배차 장비·작업 → 현장 사실 → 상담 전화, 50~80자(문장 단위로 짧은 후보 선택). 주소·title·canonical·사이트맵·robots·postbuild 는 그대로.
 - 측정(OPEN_WAVE=6, 열린 4,175쪽, `npx tsx scripts/x_check.ts` · `python -I scripts/x_html_check.py out data/site-pages.json`): h1 중복 0 · 조사 오류 0 · description 55~80자 중복 0 · 절 문단 평균 239자(공백 제외) · 같은 문장 최대 — 같은 장비 19%, 같은 지역·같은 장비 24%(평균 9%) · 같은 장소·다른 장비 평균 18%(최대 68%) · 빌드 main 평균 2,364자, p 11개(200자당 1개 이하) · 키워드 든 h2 6개/8개 · 본문 내부링크 12개.
 - title 규칙 변경(2026-11-24): 키워드 페이지 title = `{키워드} {h1 수식어} | {상호}` — 앞부분은 h1 글자와 같고(40자 이하가 되는 수식어 벌을 해시 순서로 선택), 상호는 끝에 한 번. og:title·twitter:title 같은 값, og:site_name = 상호. 점검: `scripts/x_check.ts` 의 title 중복·길이·h1 일치 줄.
+- title 40자 보정(2026-11-24): title 전체 40자 이하 — `{키워드} {h1 수식어} | {상호}` 가 40자를 넘으면 상호를 뺀다(h1·수식어는 그대로, og:site_name 은 상호).

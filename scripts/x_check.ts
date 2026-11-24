@@ -43,13 +43,14 @@ const josaErr = (text: string) => {
   return bad;
 };
 
-const h1 = new Map<string, number>(); const desc = new Map<string, number>(); const dlen: number[] = []; const titles = new Map<string, number>(); const tlen: number[] = []; const hlen: number[] = []; let tBad = 0; let lens: number[] = []; let secLens: number[] = []; let kwH2 = 0; const errs: string[] = []; let raw = 0;
+const h1 = new Map<string, number>(); const desc = new Map<string, number>(); const dlen: number[] = []; const titles = new Map<string, number>(); const tlen: number[] = []; const hlen: number[] = []; let tBad = 0; let tBrand = 0; let lens: number[] = []; let secLens: number[] = []; let kwH2 = 0; const errs: string[] = []; let raw = 0;
 for (const p of pages) {
   const g = get(p); const c = g.c;
   const h = `${p.kw} ${c.h1sub}`; h1.set(h, (h1.get(h) || 0) + 1);
   desc.set(c.description, (desc.get(c.description) || 0) + 1); dlen.push(c.description.length);
   titles.set(c.title, (titles.get(c.title) || 0) + 1); tlen.push(c.title.length); hlen.push(h.length);
-  if (!c.title.startsWith(`${h} | `) || c.title.split(' | ').length !== 2) tBad++;
+  if (c.title !== h && !(c.title.startsWith(`${h} | `) && c.title.split(' | ').length === 2)) tBad++;
+  if (c.title !== h) tBrand++;
   const len = nospace(g.text) + nospace(c.sections.map((x) => x.h).join(''));
   lens.push(len); c.sections.forEach((x) => secLens.push(nospace(x.p)));
   kwH2 += c.sections.filter((x) => x.h.includes(p.kw)).length;
@@ -68,8 +69,8 @@ console.log(`열린 페이지 ${pages.length}`);
 console.log(`h1(키워드+수식어) 중복 ${[...h1.values()].filter((v) => v > 1).length} · 자리표시자/undefined 남은 페이지 ${raw} · 조사 오류 ${errs.length}${errs.length ? ' 예) ' + [...new Set(errs)].slice(0, 8).join(', ') : ''}`);
 const dBad = dlen.filter((x) => x < 50 || x > 80).length; const dDup = [...desc.values()].filter((v) => v > 1).length;
 console.log(`description 길이 ${Math.min(...dlen)}~${Math.max(...dlen)}자 · 50~80 밖 ${dBad} · 중복 ${dDup} · 키워드 든 h2(요약·절·FAQ) 평균 ${(kwH2 / pages.length + 2).toFixed(1)}개`);
-const tDup = [...titles.values()].filter((v) => v > 1).length; const tLong = tlen.filter((v) => v > 60).length + hlen.filter((v) => v > 40).length;
-console.log(`title 중복 ${tDup} · 길이 ${Math.min(...tlen)}~${Math.max(...tlen)}자(60 초과·앞부분 40 초과 ${tLong}) · 앞부분이 h1 과 다른 페이지 ${tBad}`);
+const tDup = [...titles.values()].filter((v) => v > 1).length; const tLong = tlen.filter((v) => v > 40).length + hlen.filter((v) => v > 40).length;
+console.log(`title 중복 ${tDup} · 길이 ${Math.min(...tlen)}~${Math.max(...tlen)}자(40 초과 ${tLong}) · 상호 붙은 쪽 ${tBrand} · 상호 뺀 쪽 ${pages.length - tBrand} · 앞부분이 h1 과 다른 페이지 ${tBad}`);
 console.log(`본문 글자(설명+요약+절+FAQ답+h2, 공백 제외) 평균 ${Math.round(avg(lens))} · 최소 ${Math.min(...lens)} · 최대 ${Math.max(...lens)}`);
 console.log(`절 한 문단(공백 제외) 평균 ${Math.round(avg(secLens))} · 최소 ${Math.min(...secLens)} · 최대 ${Math.max(...secLens)} · 키워드 든 h2 평균 ${(kwH2 / pages.length).toFixed(1)}개(절 6개 중)`); // 문단 쪼개짐(p 수 ≤ 본문 200자당 1개)은 빌드 뒤 scripts/x_html_check.py 로
 const results = {
